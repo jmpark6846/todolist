@@ -1,10 +1,17 @@
-{{% extends 'base.html' %}
+{% extends 'base.html' %}
 {% block content %}
 <div id="todo-list">
+    <div class="todo-create-row">
+        <input type="text" class="form-control">
+        <button class="btn btn-success">추가</button>
+    </div>
     {% for todo in todos %}
     <div class="todo-row">
         {{ todo.title }}
     </div>
     {% endfor %}
 </div>
+{% endblock %}
+{% block script %}
+
 {% endblock %}
