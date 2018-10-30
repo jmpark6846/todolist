@@ -1,12 +1,8 @@
 from django.contrib.auth.models import User
-from django.views.generic.base import View
-from django.views.generic.detail import SingleObjectTemplateResponseMixin
-
-from django.test import TestCase, RequestFactory
+from django.test import TestCase
 from django.urls import reverse
 from django.conf import settings
 
-from .mixins import OwnerOnlyMixin
 
 class UserViewTest(TestCase):
   def setUp(self):

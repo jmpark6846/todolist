@@ -40,3 +40,8 @@ class TodoViewTestCase(TestCase):
 
         res = self.client.get(reverse('todo:list'))
         self.assertEqual(res.status_code, 200)
+
+    def test_view_can_create_a_todo(self):
+        todo_data = { 'title' : 'this is new title', 'content' : 'this is content', 'author': self.user }
+        res = self.client.post(reverse('todo:create'), todo_data)
+        self.assertEqual(res.status_code, 302) # 생성 성공시 리다이렉트
