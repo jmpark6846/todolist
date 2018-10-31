@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
-from django.http.response import HttpResponseNotFound
+from django.http.response import HttpResponseBadRequest
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from django.views import generic
@@ -36,10 +36,14 @@ def todo_create(request):
         return render(request, 'todo/todo_create.html', context)
 
 
-@login_required()
+@login_required
 def todo_detail(request, pk):
     todo = get_object_or_404(Todo, pk=pk)
     data = { 'todo' : todo }
+
+    if todo.author.pk != request.user.pk:
+        return HttpResponseBadRequest()
+
     return render(request, 'todo/todo_detail.html', data)
 
 
@@ -49,6 +53,10 @@ class TodoUpdateView(LoginRequiredMixin, generic.UpdateView):
     context_object_name = 'todo'
     template_name = 'todo/todo_update.html'
 
+    def get_queryset(self):
+        queryset = super(TodoUpdateView, self).get_queryset()
+        return queryset.filter(author=self.request.user)
+
     def get_success_url(self):
         return reverse('todo:detail', kwargs={'pk': self.object.pk})
 
@@ -56,4 +64,9 @@ class TodoUpdateView(LoginRequiredMixin, generic.UpdateView):
 class TodoDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Todo
     success_url = reverse_lazy('todo:list')
+
+    def get_queryset(self):
+        queryset = super(TodoDeleteView, self).get_queryset()
+        return queryset.filter(author=self.request.user)
+
 
