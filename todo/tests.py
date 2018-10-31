@@ -33,6 +33,7 @@ class TodoViewTestCase(TestCase):
     def setUp(self):
         self.user = self.create_user('tom', '12345')
         self.client.login(username='tom', password='12345')
+        self.todo = Todo.objects.create(title="test title", content="test content", author=self.user)
 
     def test_view_can_list_todos(self):
         for i in range(0,5):
@@ -42,6 +43,15 @@ class TodoViewTestCase(TestCase):
         self.assertEqual(res.status_code, 200)
 
     def test_view_can_create_a_todo(self):
-        todo_data = { 'title' : 'this is new title', 'content' : 'this is content', 'author': self.user }
+        todo_data = { 'title' : 'this is new title', 'content' : 'this is new content', 'author': self.user }
         res = self.client.post(reverse('todo:create'), todo_data)
         self.assertEqual(res.status_code, 302) # 생성 성공시 리다이렉트
+
+    def test_view_can_view_todo_detail(self):
+        res = self.client.get(reverse('todo:detail', kwargs={'pk':self.todo.pk}))
+        self.assertEqual(res.status_code, 200)
+
+    def test_view_can_update_todo(self):
+        todo_data = { 'title' : 'this is new title', 'content' : 'this is new content', 'author': self.user }
+        res = self.client.update(reverse('todo:update', kwargs={'pk': self.todo.pk}), todo_data)
+        self.assertEqual(res.status_code, 302) # 업데이트 성공시 디테일 뷰로 리다이렉트
