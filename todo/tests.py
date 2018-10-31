@@ -61,3 +61,15 @@ class TodoViewTestCase(TestCase):
         self.client.delete(reverse('todo:delete', kwargs={'pk': self.todo.pk}))
         new_count = Todo.objects.count()
         self.assertNotEqual(old_count, new_count)
+
+    def test_only_owner_can_view_own_todo(self):
+        self.create_user('john','1234')
+        self.client.login(username='john', password='1234')
+
+        res = self.client.delete(reverse('todo:detail', kwargs={'pk':self.todo.pk}))
+        self.assertEqual(res.status_code, 404)
+
+    def test_toggle_todo_done(self):
+        res = self.client.post(reverse('todo:toggle_done', kwargs={'pk':self.todo.id}))
+        self.assertEqual(res.status_code, 200)
+

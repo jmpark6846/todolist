@@ -1,7 +1,6 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.urls import reverse, reverse_lazy
-from django.http.response import HttpResponseBadRequest
-from django.core.exceptions import ObjectDoesNotExist
+from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -38,12 +37,8 @@ def todo_create(request):
 
 @login_required
 def todo_detail(request, pk):
-    todo = get_object_or_404(Todo, pk=pk)
+    todo = get_object_or_404(Todo, pk=pk, author=request.user)
     data = { 'todo' : todo }
-
-    if todo.author.pk != request.user.pk:
-        return HttpResponseBadRequest()
-
     return render(request, 'todo/todo_detail.html', data)
 
 
@@ -70,3 +65,13 @@ class TodoDeleteView(LoginRequiredMixin, generic.DeleteView):
         return queryset.filter(author=self.request.user)
 
 
+@login_required
+def todo_toggle_done(request, pk):
+    todo = get_object_or_404(Todo, pk=pk, author=request.user)
+    todo.done = not todo.done
+    todo.save()
+    context = {
+        'todo': todo.id,
+        'done': todo.done
+    }
+    return JsonResponse(context)

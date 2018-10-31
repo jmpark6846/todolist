@@ -4,13 +4,39 @@
     <div class="todo-create-row">
         <a href="{% url 'todo:create' %}" class="btn btn-success">추가</a>
     </div>
+
     {% for todo in todos %}
     <div class="todo-row">
-        <a href="{% url 'todo:detail' todo.pk %}">{{ todo.title }}</a>
+        <a href="{% url 'todo:detail' todo.pk %}" class="todo-title {% if todo.done %} checked {% endif %}">{{ todo.title }}</a>
+        <input class='toggle-done' type="checkbox" data-todo={{todo.id}} {% if todo.done %} checked {% endif %}>
     </div>
     {% endfor %}
 </div>
 {% endblock %}
 {% block script %}
+<script>
 
+$('.toggle-done').on('click', function(){
+
+    var todoId = this.dataset.todo
+    var item = $('.toggle-done[data-todo="'+todoId+'"]')
+    var checked = item.prop('checked')
+
+    $.ajax({
+        url: '/todo/'+todoId+'/toggle/',
+        method:'post',
+    })
+    .then(function(result){
+        item.prop('checked', result.done)
+        if(result.done){
+            item.parent().find('.todo-title').addClass('checked')
+        }else{
+            item.parent().find('.todo-title').removeClass('checked')
+        }
+    })
+    .catch(function(error){
+        item.props('checked',checked)
+    })
+})
+</script>
 {% endblock %}

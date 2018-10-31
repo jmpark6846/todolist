@@ -1,3 +1,7 @@
-.todo-create-row button{
+.todo-title.checked{
+    text-decoration: line-through;
+}
 
+body{
+    background: black;
 }
