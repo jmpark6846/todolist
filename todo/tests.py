@@ -53,5 +53,11 @@ class TodoViewTestCase(TestCase):
 
     def test_view_can_update_todo(self):
         todo_data = { 'title' : 'this is new title', 'content' : 'this is new content', 'author': self.user }
-        res = self.client.update(reverse('todo:update', kwargs={'pk': self.todo.pk}), todo_data)
+        res = self.client.post(reverse('todo:update', kwargs={'pk': self.todo.pk}), todo_data)
         self.assertEqual(res.status_code, 302) # 업데이트 성공시 디테일 뷰로 리다이렉트
+
+    def test_view_can_delete_todo(self):
+        old_count = Todo.objects.count()
+        self.client.delete(reverse('todo:delete', kwargs={'pk': self.todo.pk}))
+        new_count = Todo.objects.count()
+        self.assertNotEqual(old_count, new_count)

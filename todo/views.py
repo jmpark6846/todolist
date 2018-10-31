@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.http.response import HttpResponseNotFound
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
@@ -43,7 +43,7 @@ def todo_detail(request, pk):
     return render(request, 'todo/todo_detail.html', data)
 
 
-class UpdateView(LoginRequiredMixin, generic.UpdateView):
+class TodoUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Todo
     form_class = TodoForm
     context_object_name = 'todo'
@@ -51,3 +51,9 @@ class UpdateView(LoginRequiredMixin, generic.UpdateView):
 
     def get_success_url(self):
         return reverse('todo:detail', kwargs={'pk': self.object.pk})
+
+
+class TodoDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Todo
+    success_url = reverse_lazy('todo:list')
+

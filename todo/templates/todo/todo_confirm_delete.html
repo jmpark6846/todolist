@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3>다음 Todo를 삭제합니까?</h3>
+<h3>{{ todo.title }}</h3>
+<form action="{% url 'todo:delete' todo.pk %}" method="POST">
+  {% csrf_token %}
+  <input type='submit' value='삭제합니다'>
+</form>
+{% endblock %}

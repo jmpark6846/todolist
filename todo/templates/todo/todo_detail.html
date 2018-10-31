@@ -3,6 +3,7 @@
 <div id="todo-detail-page">
     <div class="control-row">
         <a href="{% url 'todo:update' todo.pk %}">수정</a>
+        <a href="{% url 'todo:delete' todo.pk %}">삭제</a>
     </div>
     <h3>{{todo.title}}</h3>
     <div>{{todo.content}}</div>
