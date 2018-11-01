@@ -25,7 +25,10 @@ SECRET_KEY = 'csy7a1am#my&l(9rlc%uwb)031t!5@i=2lomwp!j*^a1r03xos'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['wintercoding-todolist.herokuapp.com']
+ALLOWED_HOSTS = [
+    'localhost',
+    'wintercoding-todolist.herokuapp.com'
+]
 
 
 # Application definition
@@ -77,8 +80,12 @@ WSGI_APPLICATION = 'proj.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'todolist',
+        'USER': 'joonmo',
+        'PASSWORD': 'todolist1234',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
