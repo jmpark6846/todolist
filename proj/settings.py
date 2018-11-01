@@ -25,7 +25,7 @@ SECRET_KEY = 'csy7a1am#my&l(9rlc%uwb)031t!5@i=2lomwp!j*^a1r03xos'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['wintercoding-todolist.herokuapp.com']
 
 
 # Application definition
