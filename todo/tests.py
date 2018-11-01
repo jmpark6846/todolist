@@ -43,7 +43,7 @@ class TodoViewTestCase(TestCase):
         self.assertEqual(res.status_code, 200)
 
     def test_view_can_create_a_todo(self):
-        todo_data = { 'title' : 'this is new title', 'content' : 'this is new content', 'author': self.user }
+        todo_data = { 'title' : 'this is new title', 'content' : 'this is new content', 'author': self.user, 'priority':2 }
         res = self.client.post(reverse('todo:create'), todo_data)
         self.assertEqual(res.status_code, 302) # 생성 성공시 리다이렉트
 
@@ -52,7 +52,7 @@ class TodoViewTestCase(TestCase):
         self.assertEqual(res.status_code, 200)
 
     def test_view_can_update_todo(self):
-        todo_data = { 'title' : 'this is new title', 'content' : 'this is new content', 'author': self.user }
+        todo_data = { 'title' : 'this is new title', 'content' : 'this is new content', 'author': self.user,  'priority':2 }
         res = self.client.post(reverse('todo:update', kwargs={'pk': self.todo.pk}), todo_data)
         self.assertEqual(res.status_code, 302) # 업데이트 성공시 디테일 뷰로 리다이렉트
 

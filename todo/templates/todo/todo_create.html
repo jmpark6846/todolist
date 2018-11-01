@@ -5,18 +5,7 @@
   {{ form.media }}
   {% csrf_token %}
 
-  <div class="form-group">
-    {{ form.title }}
-  </div>
-
-  <div class="form-group">
-    <div id="content"></div>
-    {{ form.content }}
-  </div>
-
-  <div class="form-group">
-    {{ form.duedate }}
-  </div>
+  {{ form.as_p }}
 
   <input class='btn btn-success' type='submit' value='생성'>
 </form>

@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.urls import reverse, reverse_lazy
 from django.http import JsonResponse
@@ -10,7 +11,10 @@ from .models import Todo
 @login_required
 def todo_list(request):
     todos = Todo.objects.filter(author=request.user)
-    context = { 'todos': todos }
+    # 마감 기한이 지난 할일들 고르기
+    expired = todos.filter(done=False, duedate__lt=timezone.now())
+
+    context = { 'todos': todos, 'expired':expired }
     return render(request, 'todo/todo_list.html', context)
 
 

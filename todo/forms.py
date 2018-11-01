@@ -2,9 +2,10 @@ from django import forms
 from .models import Todo
 
 class TodoForm(forms.ModelForm):
+
     class Meta:
         model = Todo
-        fields = ['title', 'content', 'duedate']
+        fields = ['title', 'content', 'duedate', 'priority']
         widgets = {
             'title': forms.TextInput(attrs={
                 'autocomplete': 'off',
@@ -14,7 +15,10 @@ class TodoForm(forms.ModelForm):
             'content': forms.Textarea(attrs={
                 'class': 'form-control',
             }),
-            'duedate': forms.DateTimeInput(attrs={
+            'duedate': forms.Select(attrs={
+                'class': 'form-control',
+            }),
+            'priority': forms.Select(attrs={
                 'class': 'form-control',
             })
         }

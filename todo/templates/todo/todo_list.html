@@ -1,14 +1,20 @@
 {% extends 'base.html' %}
 {% block content %}
 <div id="todo-list-page">
+
+    {% if expired %}
+        {% include 'todo/expired_alert.html' %}
+    {% endif %}
+
     <div class="todo-create-row">
         <a href="{% url 'todo:create' %}" class="btn btn-success">추가</a>
     </div>
 
     {% for todo in todos %}
     <div class="todo-row">
-        <a href="{% url 'todo:detail' todo.pk %}" class="todo-title {% if todo.done %} checked {% endif %}">{{ todo.title }}</a>
         <input class='toggle-done' type="checkbox" data-todo={{todo.id}} {% if todo.done %} checked {% endif %}>
+        <a href="{% url 'todo:detail' todo.pk %}" class="todo-title {% if todo.done %} checked {% endif %}">{{ todo.title }}</a>
+
     </div>
     {% endfor %}
 </div>
