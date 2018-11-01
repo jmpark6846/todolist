@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 # Create your models here.
 
-# todo : 우선순위 추가
 class Todo(models.Model):
     PRIORITY_CHOICES = (
         (1, '우선 순위 1'),

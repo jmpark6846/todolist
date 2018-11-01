@@ -24,12 +24,7 @@ SECRET_KEY = 'csy7a1am#my&l(9rlc%uwb)031t!5@i=2lomwp!j*^a1r03xos'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = [
-    'localhost',
-    'wintercoding-todolist.herokuapp.com'
-]
-
+ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -75,20 +70,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'proj.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/2.1/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'todolist',
-        'USER': 'joonmo',
-        'PASSWORD': 'todolist1234',
-        'HOST': 'localhost',
-        'PORT': '',
-    }
-}
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -107,6 +88,8 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+
 
 
 # Internationalization
@@ -137,6 +120,3 @@ STATICFILES_DIRS = (
 )
 
 STATIC_ROOT = 'staticfiles'
-
-
-django_heroku.settings(locals())
