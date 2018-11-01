@@ -5,9 +5,9 @@ from django.contrib.auth.models import User
 # todo : 우선순위 추가
 class Todo(models.Model):
     PRIORITY_CHOICES = (
-        (1, '낮음'),
-        (2, '보통'),
-        (3, '높음'),
+        (1, '우선 순위 1'),
+        (2, '우선 순위 2'),
+        (3, '우선 순위 3'),
     )
 
     title = models.CharField('제목', max_length=255)
@@ -15,7 +15,7 @@ class Todo(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='todos')
     duedate = models.DateTimeField('마감기한', blank=True, null=True)
     done = models.BooleanField('완료', default=False)
-    priority = models.IntegerField(choices=PRIORITY_CHOICES, default=2)
+    priority = models.IntegerField('우선 순위', choices=PRIORITY_CHOICES, default=1)
 
     created = models.DateTimeField('생성날짜', auto_now_add=True)
     updated = models.DateTimeField('수정날짜', auto_now=True)

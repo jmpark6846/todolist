@@ -32,11 +32,11 @@ def todo_create(request):
             return redirect(reverse('todo:list'))
         else:
             context = { 'form': form }
-            return render(request, 'todo/todo_create.html', context)
+            return render(request, 'todo/todo_form.html', context)
     else:
         form = TodoForm()
         context = { 'form': form }
-        return render(request, 'todo/todo_create.html', context)
+        return render(request, 'todo/todo_form.html', context)
 
 
 @login_required
@@ -50,7 +50,7 @@ class TodoUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Todo
     form_class = TodoForm
     context_object_name = 'todo'
-    template_name = 'todo/todo_update.html'
+    template_name = 'todo/todo_form.html'
 
     def get_queryset(self):
         queryset = super(TodoUpdateView, self).get_queryset()

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h3>생성/업데이트</h3>
+<form id='todo_form' method='post'>
+  {{ form.media }}
+  {% csrf_token %}
+
+  {% for field in form %}
+    <div class="form-group">
+
+        {{ field }}
+        {% if field.help_text %}
+        <p class="help">{{ field.help_text|safe }}</p>
+        {% endif %}
+        {% if field.help_text %}
+        <div class="alert alert-danger">{{ field.errors }}</div>
+        {% endif %}
+    </div>
+{% endfor %}
+
+  <input class='btn btn-success' type='submit' value='완료'>
+</form>
+{% endblock %}

@@ -13,12 +13,15 @@ class TodoForm(forms.ModelForm):
                 'class': 'form-control',
             }),
             'content': forms.Textarea(attrs={
+                'placeholder': '내용',
                 'class': 'form-control',
             }),
-            'duedate': forms.Select(attrs={
+            'duedate': forms.SelectDateWidget(attrs={
+                'placeholder': '마감기한',
                 'class': 'form-control',
             }),
             'priority': forms.Select(attrs={
+                'placeholder': '우선 순위',
                 'class': 'form-control',
             })
         }

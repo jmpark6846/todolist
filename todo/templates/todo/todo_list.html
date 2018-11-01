@@ -13,7 +13,7 @@
     {% for todo in todos %}
     <div class="todo-row">
         <input class='toggle-done' type="checkbox" data-todo={{todo.id}} {% if todo.done %} checked {% endif %}>
-        <a href="{% url 'todo:detail' todo.pk %}" class="todo-title {% if todo.done %} checked {% endif %}">{{ todo.title }}</a>
+        <a href="{% url 'todo:update' todo.pk %}" class="todo-title {% if todo.done %} checked {% endif %}">{{ todo.title }}</a>
 
     </div>
     {% endfor %}
