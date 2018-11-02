@@ -32,8 +32,3 @@ class UserViewTest(TestCase):
     self.assertEqual(res.status_code, 200)
 
 
-  def test_can_see_user_profile_view(self):
-    res = self.client.get(reverse('user:profile', kwargs={ "username": self.user.username }))
-    self.assertEqual(res.context['user'].username, self.user.username)
-    self.assertEqual(res.status_code, 200)
-

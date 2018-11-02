@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponseRedirect, HttpResponse
+from django.shortcuts import render, redirect, reverse
 from django.contrib.auth import views, login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -15,14 +15,9 @@ def signup(request):
     if form.is_valid():
       user = form.save()
       login(request, user)
-      return render(request, 'user/signup_completion.html')
+      return redirect(reverse('todo:list'))
     else:
       return render(request, 'user/signup.html', { 'form': form })
   else:
     form = UserCreationForm()
     return render(request, 'user/signup.html', { 'form': form })
-
-
-def profile(request, username):
-  user = User.objects.get(username=username)
-  return render(request, 'user/profile.html', { 'user': user })
