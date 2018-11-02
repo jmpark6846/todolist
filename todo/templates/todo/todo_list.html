@@ -10,17 +10,39 @@
         <a href="{% url 'todo:create' %}" class="btn btn-success">추가</a>
     </div>
 
-    {% for todo in todos %}
+    <a href="{% url 'todo:list'%}?sort_by=-priority">우선순위</a>
+    <a href="{% url 'todo:list'%}?sort_by=-created">생성날짜</a>
+    <a href="{% url 'todo:list'%}?sort_by=duedate">마감기한</a>
+    {% for todo in alive %}
     <div class="todo-row">
         <input class='toggle-done' type="checkbox" data-todo={{todo.id}} {% if todo.done %} checked {% endif %}>
         <a href="{% url 'todo:update' todo.pk %}" class="todo-title {% if todo.done %} checked {% endif %}">{{ todo.title }}</a>
-
     </div>
     {% endfor %}
+    <hr>
+    <a id='toggle-show-done' data-toggle="collapse" href="#done-todo-list" role="button" aria-expanded="false" aria-controls="done-todo-list">
+        완료된 할일 보이기
+    </a>
+    <div class="collapse" id="done-todo-list">
+        {% for todo in done %}
+        <div class="todo-row">
+            <input class='toggle-done' type="checkbox" data-todo={{todo.id}} {% if todo.done %} checked {% endif %}>
+            <a href="{% url 'todo:update' todo.pk %}" class="todo-title {% if todo.done %} checked {% endif %}">{{ todo.title }}</a>
+        </div>
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}
 {% block script %}
 <script>
+var ShowDoneButton = $('#toggle-show-done')
+
+ShowDoneButton.on('click',function(){
+    console.log(ShowDoneButton.attr('aria-expanded'))
+    var newText = ShowDoneButton.attr('aria-expanded') == 'false' ? '완료된 할일 숨기기' : '완료된 할일 보이기'
+    ShowDoneButton.text(newText)
+})
+
 
 $('.toggle-done').on('click', function(){
 

@@ -1,7 +1,8 @@
 from django.utils import timezone
+from django.core.exceptions import FieldError
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.urls import reverse, reverse_lazy
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseNotFound
 from django.contrib.auth.decorators import login_required
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -10,12 +11,32 @@ from .models import Todo
 
 @login_required
 def todo_list(request):
-    todos = Todo.objects.filter(author=request.user)
-    # 마감 기한이 지난 할일들 고르기
-    expired = todos.filter(done=False, duedate__lt=timezone.now())
+    sort_by = request.GET.get('sort_by')
 
-    context = { 'todos': todos, 'expired':expired }
-    return render(request, 'todo/todo_list.html', context)
+    if not sort_by :
+        if request.session['sort_by']:
+            sort_by = request.session['sort_by']
+        else:
+            sort_by = 'created'
+            request.session['sort_by']=sort_by
+    else:
+        request.session['sort_by'] = sort_by
+
+    try:
+        todos = Todo.objects.filter(author=request.user).order_by(sort_by)
+        expired = todos.filter(done=False, duedate__lt=timezone.now())
+        done = todos.filter(done=True)
+        alive = todos.filter(done=False)
+        context = {'done': done, 'alive': alive, 'expired': expired}
+
+        return render(request, 'todo/todo_list.html', context)
+    except FieldError:
+        return HttpResponseNotFound()
+
+
+def url_with_querystring(path, **kwargs):
+    import urllib
+    return path + '?' + urllib.parse.urlencode(kwargs)
 
 
 @login_required
@@ -23,12 +44,9 @@ def todo_create(request):
     if request.method == 'POST':
         form = TodoForm(request.POST)
         if form.is_valid():
-            todo = Todo.objects.create(
-                title = form.cleaned_data['title'],
-                content = form.cleaned_data['content'],
-                author = request.user,
-                duedate = form.cleaned_data['duedate']
-            )
+            todo = Todo(**form.cleaned_data)
+            todo.author = request.user
+            todo.save()
             return redirect(reverse('todo:list'))
         else:
             context = { 'form': form }
@@ -57,7 +75,7 @@ class TodoUpdateView(LoginRequiredMixin, generic.UpdateView):
         return queryset.filter(author=self.request.user)
 
     def get_success_url(self):
-        return reverse('todo:detail', kwargs={'pk': self.object.pk})
+        return reverse('todo:list')
 
 
 class TodoDeleteView(LoginRequiredMixin, generic.DeleteView):

@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth.models import User
 from .models import Todo
+from .views import url_with_querystring
 
 # Create your tests here.
 class TodoModelTestCase(TestCase):
@@ -73,3 +74,18 @@ class TodoViewTestCase(TestCase):
         res = self.client.post(reverse('todo:toggle_done', kwargs={'pk':self.todo.id}))
         self.assertEqual(res.status_code, 200)
 
+    def test_can_sort_todolist_by_priority(self):
+        Todo.objects.create(title="test title", content="test content", author=self.user, priority=3, done=False)
+        Todo.objects.create(title="test title", content="test content", author=self.user, priority=2, done=False)
+        Todo.objects.create(title="test title", content="test content", author=self.user, priority=1, done=False)
+
+        url = url_with_querystring(reverse('todo:list'), sort_by='-priority')
+        res = self.client.get(url)
+
+        self.assertEqual(res.context['alive'][0].priority, 3)
+        self.assertEqual(res.status_code, 200)
+
+    def test_show_404_with_wrong_querystring_for_sort_todolist(self):
+        url = url_with_querystring(reverse('todo:list'), sort_by='hahaha')
+        res = self.client.get(url)
+        self.assertEqual(res.status_code, 404)
