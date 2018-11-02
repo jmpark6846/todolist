@@ -1,11 +1,14 @@
-<div class="card todo-row mb-2">
-    <a href="{% url 'todo:update' todo.pk %}" class="todo-title {% if todo.done %} checked {% endif %}">
+<div class="card todo-row mb-2 {% if todo.priority == 2 %}border-warning{% endif %} {% if todo.priority == 3 %}border-danger{% endif %}">
+    <a href="{% url 'todo:update' todo.pk %}" class="todo-title {% if todo.done %}checked{% endif %} ">
         <div class="card-body p-3">
             <input class='toggle-done' type="checkbox" data-todo={{todo.id}} {% if todo.done %} checked {% endif %}>
             {{ todo.title }}
-            {% if todo.duedate %}
-            <div class="duedate float-right">{{todo.duedate|date:'Y년 M j일'}}</div>
-            {% endif %}
+            <div class="meta float-right">
+                {% if todo.duedate %}
+                <div class="duedate">{{todo.duedate|date:'Y년 M j일'}}</div>
+                {% endif %}
+            </div>
         </div>
     </a>
+
 </div>
