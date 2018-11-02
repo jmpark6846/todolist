@@ -6,7 +6,7 @@
         {% include 'todo/expired_alert.html' %}
     {% endif %}
 
-    <div class="todo-control-row">
+    <div class="todo-control-row mb-2">
         <a href="{% url 'todo:create' %}" class="btn btn-success">추가</a>
         <div class="dropdown">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="sort-menu-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -20,57 +20,66 @@
         </div>
     </div>
 
-    {% for todo in alive %}
-    <div class="todo-row">
-        <input class='toggle-done' type="checkbox" data-todo={{todo.id}} {% if todo.done %} checked {% endif %}>
-        <a href="{% url 'todo:update' todo.pk %}" class="todo-title {% if todo.done %} checked {% endif %}">{{ todo.title }}</a>
+    <div class="todo-list">
+        {% for todo in alive %}
+            {% include 'todo/todo-item.html' %}
+        {% endfor %}
     </div>
-    {% endfor %}
+
     <hr>
     <a id='toggle-show-done' data-toggle="collapse" href="#done-todo-list" role="button" aria-expanded="false" aria-controls="done-todo-list">
         완료된 할일 보이기
     </a>
-    <div class="collapse" id="done-todo-list">
+
+    <div class="collapse todo-list" id="done-todo-list">
         {% for todo in done %}
-        <div class="todo-row">
-            <input class='toggle-done' type="checkbox" data-todo={{todo.id}} {% if todo.done %} checked {% endif %}>
-            <a href="{% url 'todo:update' todo.pk %}" class="todo-title {% if todo.done %} checked {% endif %}">{{ todo.title }}</a>
-        </div>
+              {% include 'todo/todo-item.html' %}
         {% endfor %}
     </div>
 </div>
 {% endblock %}
 {% block script %}
 <script>
-var ShowDoneButton = $('#toggle-show-done')
+$(function(){
 
-ShowDoneButton.on('click',function(){
-    console.log(ShowDoneButton.attr('aria-expanded'))
-    var newText = ShowDoneButton.attr('aria-expanded') == 'false' ? '완료된 할일 숨기기' : '완료된 할일 보이기'
-    ShowDoneButton.text(newText)
-})
+    $('.todo-list .card').hover(
+        function(){
+            $(this).addClass('shadow-sm')
+        },
+        function(){
+            $(this).removeClass('shadow-sm')
+        })
 
+    var ShowDoneButton = $('#toggle-show-done')
 
-$('.toggle-done').on('click', function(){
-
-    var todoId = this.dataset.todo
-    var item = $('.toggle-done[data-todo="'+todoId+'"]')
-    var checked = item.prop('checked')
-
-    $.ajax({
-        url: '/todo/'+todoId+'/toggle/',
-        method:'post',
+    ShowDoneButton.on('click',function(){
+        console.log(ShowDoneButton.attr('aria-expanded'))
+        var newText = ShowDoneButton.attr('aria-expanded') == 'false' ? '완료된 할일 숨기기' : '완료된 할일 보이기'
+        ShowDoneButton.text(newText)
     })
-    .then(function(result){
-        item.prop('checked', result.done)
-        if(result.done){
-            item.parent().find('.todo-title').addClass('checked')
-        }else{
-            item.parent().find('.todo-title').removeClass('checked')
-        }
-    })
-    .catch(function(error){
-        item.props('checked',checked)
+
+
+    $('.toggle-done').on('click', function(){
+
+        var todoId = this.dataset.todo
+        var item = $(this)
+        var checked = item.prop('checked')
+
+        $.ajax({
+            url: '/todo/'+todoId+'/toggle/',
+            method:'post',
+        })
+        .then(function(result){
+            item.prop('checked', result.done)
+            if(result.done){
+                item.parent().find('.todo-title').addClass('checked')
+            }else{
+                item.parent().find('.todo-title').removeClass('checked')
+            }
+        })
+        .catch(function(error){
+            item.props('checked',checked)
+        })
     })
 })
 </script>

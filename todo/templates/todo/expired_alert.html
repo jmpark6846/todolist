@@ -1,8 +1,8 @@
 <div class="alert alert-warning alert-dismissible fade show" role="alert">
-    <h3 class="alert-heading">만료기간이 지났어요!</h3>
-    <hr>
-    {% for e in expired %}
-        <div>{{e.title}}</div>
+    <strong>만료기간이 지났어요!</strong> 아래 일정을 확인해주세요.
+    <hr class="m-2">
+    {% for todo in expired %}
+        <a href="{% url 'todo:update' todo.pk %}">{{todo.title}}</a>
     {% endfor %}
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>

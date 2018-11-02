@@ -17,7 +17,7 @@ def todo_list(request):
         if 'sort_by' in request.session:
             sort_by = request.session['sort_by']
         else:
-            sort_by = 'created'
+            sort_by = '-created'
             request.session['sort_by']=sort_by
     else:
         request.session['sort_by'] = sort_by

@@ -5,7 +5,7 @@ class TodoForm(forms.ModelForm):
 
     class Meta:
         model = Todo
-        fields = ['title', 'content', 'duedate', 'priority']
+        fields = ['title', 'content', 'duedate', 'priority', 'done']
         widgets = {
             'title': forms.TextInput(attrs={
                 'autocomplete': 'off',
