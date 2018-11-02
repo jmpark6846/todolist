@@ -13,8 +13,8 @@ from .models import Todo
 def todo_list(request):
     sort_by = request.GET.get('sort_by')
 
-    if not sort_by :
-        if request.session['sort_by']:
+    if not sort_by:
+        if 'sort_by' in request.session:
             sort_by = request.session['sort_by']
         else:
             sort_by = 'created'
