@@ -6,13 +6,20 @@
         {% include 'todo/expired_alert.html' %}
     {% endif %}
 
-    <div class="todo-create-row">
+    <div class="todo-control-row">
         <a href="{% url 'todo:create' %}" class="btn btn-success">추가</a>
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="sort-menu-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                정렬
+            </button>
+            <div class="dropdown-menu" aria-labelledby="sort-menu-button">
+                <a class='dropdown-item' href="{% url 'todo:list'%}?sort_by=-priority">우선순위</a>
+                <a class='dropdown-item' href="{% url 'todo:list'%}?sort_by=-created">생성날짜</a>
+                <a class='dropdown-item' href="{% url 'todo:list'%}?sort_by=duedate">마감기한</a>
+            </div>
+        </div>
     </div>
 
-    <a href="{% url 'todo:list'%}?sort_by=-priority">우선순위</a>
-    <a href="{% url 'todo:list'%}?sort_by=-created">생성날짜</a>
-    <a href="{% url 'todo:list'%}?sort_by=duedate">마감기한</a>
     {% for todo in alive %}
     <div class="todo-row">
         <input class='toggle-done' type="checkbox" data-todo={{todo.id}} {% if todo.done %} checked {% endif %}>

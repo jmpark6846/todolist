@@ -2,6 +2,17 @@
     text-decoration: line-through;
 }
 
-body{
-    background: black;
+.dropdown{
+    display: inline-block;
+}
+
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) {
+    #todo-form input[name=duedate]{
+        width:106px;
+    }
+    #todo-form select[name=priority]{
+        width:120px;
+    }
 }

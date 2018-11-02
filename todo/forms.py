@@ -16,8 +16,9 @@ class TodoForm(forms.ModelForm):
                 'placeholder': '내용',
                 'class': 'form-control',
             }),
-            'duedate': forms.SelectDateWidget(attrs={
-                'placeholder': '마감기한',
+            'duedate': forms.DateInput(attrs={
+                'placeholder': '마감기한(선택)',
+                'autocomplete': 'off',
                 'class': 'form-control',
             }),
             'priority': forms.Select(attrs={
