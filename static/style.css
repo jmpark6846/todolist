@@ -1,3 +1,11 @@
+a{
+    color: rgba(0,0,0,.7);
+}
+a:hover{
+    color: rgba(0,0,0, .9);
+    text-decoration: none!important;
+}
+
 .todo-title.checked{
     text-decoration: line-through;
 }
@@ -6,6 +14,12 @@
     display: inline-block;
 }
 
+.todo-row .duedate{
+    display: inline-block;
+}
+.todo-list .card:hover{
+
+}
 
 // Large devices (desktops, 992px and up)
 @media (min-width: 992px) {
