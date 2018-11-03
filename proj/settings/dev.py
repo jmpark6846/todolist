@@ -7,8 +7,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'todolist',
-        'USER': 'joonmo',
-        'PASSWORD': 'todolist1234',
+        'USER': 'admin',
+        'PASSWORD': '1234',
         'HOST': 'localhost',
         'PORT': '',
     }
